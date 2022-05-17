@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+const MIGRATIONS_PATH = __DIR__."/migrations";
+
+$migrate = new class {
+    public function exec(): void
+    {
+        $this->runMigrations();
+    }
+
+    private function runMigrations(): void
+    {
+        $files = glob(MIGRATIONS_PATH.'/*.php');
+        $this->run($files);
+    }
+
+    private function run($files)
+    {
+        foreach ($files as $file) {
+            (static function () use ($file) {
+                return require $file;
+            })();
+        }
+    }
+};
+
+$migrate->exec();
