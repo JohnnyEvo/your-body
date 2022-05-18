@@ -1,9 +1,15 @@
 <script>
+  import {user} from '../store'
+
   let users = [];
 
   $: count = users.length;
 
-  fetch('/api/users').then(response => response.json()).then(usersFetch => users = usersFetch);
+  fetch('/api/users', {
+    headers: {
+      Authorization: `Bearer ${$user.accessToken}`
+    }
+  }).then(response => response.json()).then(usersFetch => users = usersFetch);
 </script>
 
 <div>

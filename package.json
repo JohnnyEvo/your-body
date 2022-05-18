@@ -1,5 +1,8 @@
 {
+  "name": "svelete-test",
   "devDependencies": {
+    "dotenv": "^16.0.1",
+    "firebase": "^9.8.1",
     "laravel-mix": "^6.0.43",
     "laravel-mix-svelte": "^0.5.0",
     "laravel-mix-tailwind": "^0.1.2",
@@ -8,6 +11,7 @@
     "sass-loader": "^12.6.0",
     "svelte": "^3.48.0",
     "svelte-loader": "^3.1.2",
+    "svelte-local-storage-store": "^0.2.6",
     "svelte-routing": "^1.6.0",
     "tailwindcss": "^3.0.24"
   }

@@ -457,24 +457,12 @@ Ensure the default browser behavior of the `hidden` attribute.
     max-width: 1536px;
   }
 }
-.relative {
-  position: relative;
-}
 .sticky {
   position: -webkit-sticky;
   position: sticky;
 }
 .top-0 {
   top: 0px;
-}
-.-top-4 {
-  top: -1rem;
-}
-.-top-6 {
-  top: -1.5rem;
-}
-.float-right {
-  float: right;
 }
 .mx-auto {
   margin-left: auto;
@@ -504,11 +492,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .flex-nowrap {
   flex-wrap: nowrap;
 }
-.content-center {
-  align-content: center;
-}
 .items-center {
   align-items: center;
+}
+.rounded-md {
+  border-radius: 0.375rem;
 }
 .border-r-2 {
   border-right-width: 2px;
@@ -525,32 +513,51 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
+.bg-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 73 63 / var(--tw-bg-opacity));
+}
 .p-6 {
   padding: 1.5rem;
 }
 .p-10 {
   padding: 2.5rem;
 }
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .text-primary {
   --tw-text-opacity: 1;
   color: rgb(15 73 63 / var(--tw-text-opacity));
 }
-.accent-primary {
-  accent-color: #0F493F;
-}
-.shadow-2xl {
-  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.hover\:font-bold:hover {
+  font-weight: 700;
 }
 @media (min-width: 768px) {
 

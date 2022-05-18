@@ -1,5 +1,6 @@
 let mix = require('laravel-mix');
 
+require('dotenv/config');
 require('laravel-mix-tailwind');
 require('laravel-mix-svelte');
 
