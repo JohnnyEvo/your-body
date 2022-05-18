@@ -9,7 +9,6 @@ AppFactory::setContainer($container);
 
 $container->set('view', function () {
     return Twig::create(__DIR__.'/../resources/views', [
-        'cache' => false
-        // __DIR__.'/../storage/tmp/views'
+        'cache' => $_ENV['APP_DEBUG'] ? false : __DIR__.'/../storage/tmp/views',
     ]);
 });
