@@ -12,15 +12,10 @@ class Controller
     {
     }
 
-    public function render(Response $response, string $file, ?array $args = [])
-    {
-        return $this->container->get('view')->render($response, $file, $args);
-    }
-
     /**
      * @throws JsonException
      */
-    public function json(Response $response, mixed $payload = '', int $status = 200)
+    public function json(Response $response, mixed $payload = '', int $status = 200): Response
     {
         $response->getBody()->write(json_encode($payload, JSON_THROW_ON_ERROR));
 

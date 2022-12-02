@@ -1,6 +1,11 @@
 #!/usr/bin/env php
 <?php
 
+require __DIR__.'/vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ );
+$dotenv->load();
+
 const MIGRATIONS_PATH = __DIR__."/migrations";
 
 $migrate = new class {
@@ -15,12 +20,10 @@ $migrate = new class {
         $this->run($files);
     }
 
-    private function run($files)
+    private function run($files): void
     {
         foreach ($files as $file) {
-            (static function () use ($file) {
-                return require $file;
-            })();
+            (require $file)();
         }
     }
 };

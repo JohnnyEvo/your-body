@@ -5,10 +5,10 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 $capsule = new Capsule;
 $capsule->addConnection([
     "driver" => "mysql",
-    "host" => "127.0.0.1",
-    "database" => "slim",
-    "username" => "root",
-    "password" => "rW3#MpSGvZ"
+    "host" =>  env('DB_HOST'),
+    "database" =>  env('DB_NAME'),
+    "username" => env('DB_USERNAME'),
+    "password" => env('DB_PASSWORD')
 ]);
 $capsule->setAsGlobal();
 $capsule->bootEloquent();

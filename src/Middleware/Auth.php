@@ -3,9 +3,10 @@
 namespace App\Middleware;
 
 use DI\Container;
+use DI\DependencyException;
+use DI\NotFoundException;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
-use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
@@ -17,6 +18,10 @@ class Auth
     {
     }
 
+    /**
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
     public function __invoke(Request $request, RequestHandler $handler): Response|ResponseInterface
     {
         $uri = $request->getUri();
@@ -37,12 +42,20 @@ class Auth
             return $this->abort();
         }
 
-        return $handler->handle($request);
+        $token = $this->container->get('token')->refresh($token, env('APP_SECRET'));
+
+        $this->container->get('auth')->setToken($token);
+
+        $response = $handler->handle($request);
+
+        $response->withHeader('Authorization', $token);
+
+        return $response;
     }
 
     #[Pure] private function routeShouldBeCatch($path): bool
     {
-        return Str::startsWith($path, $this->params['path']);
+        return Str::startsWith($path, $this->params['path']) && !in_array($path, $this->params['excludes']);
     }
 
     private function getToken(Request $request): null|string
@@ -61,12 +74,6 @@ class Auth
 
     private function getVerifiedToken(string $token)
     {
-        try {
-            $verifiedIdToken = $this->container->get('auth')->verifyIdToken($token);
-        } catch (FailedToVerifyToken $e) {
-            $verifiedIdToken = null;
-        }
-
-        return $verifiedIdToken;
+        return $this->container->get('token')->validate($token, env('APP_SECRET'));
     }
 }

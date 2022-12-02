@@ -7,11 +7,12 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 return new class
 {
-    public function __invoke()
+    public function __invoke(): void
     {
         Capsule::schema()->create('users', function ($table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('email')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }

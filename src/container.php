@@ -2,20 +2,28 @@
 
 use DI\Container;
 use Slim\Factory\AppFactory;
-use Slim\Views\Twig;
-use Kreait\Firebase\Factory;
 
 $container = new Container();
 AppFactory::setContainer($container);
 
-$container->set('view', function () {
-    return Twig::create(__DIR__.'/../resources/views', [
-        'cache' => $_ENV['APP_DEBUG'] ? false : __DIR__.'/../storage/tmp/views',
-    ]);
+$container->set('token', function (\App\Auth\Token $token) {
+    $token->setSecret(env('APP_SECRET'));
+    $token->setIssuer(env('APP_BASE'));
+    $token->setExpiration(time() + 3600);
+
+    return $token;
 });
-$container->set(Factory::class, function () {
-    return (new Factory)->withServiceAccount(__DIR__.'/../firebase.json');
+
+$container->set(\App\Contracts\Token::class, $container->get('token'));
+
+$container->set('auth', function (\App\Auth\Auth $auth) {
+    return $auth;
 });
-$container->set('auth', function (Factory $factory) {
-    return $factory->createAuth();
+$container->set('mailer', function (\App\Mailers\Mailer $mailer) {
+    return $mailer;
+});
+
+$container->set('event_manager', function () {
+    $events = require __DIR__ . '/events.php';
+    return new \App\Events\EventManager($events);
 });
