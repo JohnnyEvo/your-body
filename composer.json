@@ -22,7 +22,8 @@
         "respect/validation": "^2.2",
         "rbdwllr/psr-jwt": "^2.0",
         "league/event": "^3.0",
-        "symfony/mailer": "^6.2"
+        "symfony/mailer": "^6.2",
+        "michelf/php-markdown": "^2.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^5.4"

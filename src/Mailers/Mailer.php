@@ -2,16 +2,23 @@
 
 namespace App\Mailers;
 
+use App\Contracts\MailerTemplate;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Mailer as MailerService;
+use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 
 class Mailer
 {
     private Email $email;
+    private ?MailerTemplate $template;
+    private MailerService $mailer;
 
-    public function __construct(protected MailerService $mailer)
+    public function __construct()
     {
+        $transport = Transport::fromDsn(env('MAIL_DSN'));
+
+        $this->mailer = new MailerService($transport);
         $this->email = new Email();
         $this->email->from(env('MAIL_FROM'));
     }
@@ -21,19 +28,9 @@ class Mailer
         $this->email->to($to);
     }
 
-    public function subject(string $subject): void
+    public function template(MailerTemplate $template): void
     {
-        $this->email->subject($subject);
-    }
-
-    public function text(string $text): void
-    {
-        $this->email->text($text);
-    }
-
-    public function html(string $text): void
-    {
-        $this->email->html($text);
+        $this->template = $template;
     }
 
     /**
@@ -41,6 +38,8 @@ class Mailer
      */
     public function send(): void
     {
+        $this->email->subject($this->template->getSubject());
+        $this->email->html($this->template->getContent());
         $this->mailer->send($this->email);
     }
 }

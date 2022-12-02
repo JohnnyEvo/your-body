@@ -19,11 +19,12 @@ $container->set(\App\Contracts\Token::class, $container->get('token'));
 $container->set('auth', function (\App\Auth\Auth $auth) {
     return $auth;
 });
+
 $container->set('mailer', function (\App\Mailers\Mailer $mailer) {
     return $mailer;
 });
 
-$container->set('event_manager', function () {
+$container->set('event_manager', function ($container) {
     $events = require __DIR__ . '/events.php';
     return new \App\Events\EventManager($events);
 });
