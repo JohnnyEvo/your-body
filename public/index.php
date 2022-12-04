@@ -21,6 +21,7 @@ $app = AppFactory::create();
 
 $app->add(new TrailingSlash());
 $app->add(new Auth($app->getContainer(), ["path" => ["/api"], "excludes" => ["/api/auth/login", "/api/auth/register"],]));
+$app->addErrorMiddleware(env("APP_DEBUG"), env("APP_DEBUG"), env("APP_DEBUG"));
 
 $app->group('/api', function (RouteCollectorProxyInterface $app) {
     $app->group('/auth', function (RouteCollectorProxyInterface $group) {
