@@ -4,37 +4,43 @@ namespace App\Reports;
 
 use App\Contracts\Report;
 use App\Exceptions\BadCharacteristicUserException;
+use App\Health\Bmi;
+use App\Health\Bmr;
 use App\Models\User;
 
 class HealthReport implements Report
 {
+    public function __construct(protected User $user)
+    {
+    }
+
     /**
      * @throws BadCharacteristicUserException
      */
-    public function __construct(protected User $user)
-    {
-        if(!$this->user->characteristic->weight) {
-            throw new BadCharacteristicUserException('weight is not defined.');
-        }
-
-        if(!$this->user->characteristic->height) {
-            throw new BadCharacteristicUserException('height is not defined.');
-        }
-    }
-
     public function reporting(): array
     {
         return [
             "name" => $this->user->email,
-            "bmi" => $this->calculateBmi(),
+            "bmi" => $this->getBmi(),
+            "bmr" => $this->getBmr(),
         ];
     }
 
-    public function calculateBmi(): float
+    /**
+     * @throws BadCharacteristicUserException
+     */
+    public function getBmi(): float
     {
-        return round(
-            $this->user->characteristic->weight / (($this->user->characteristic->height/100)**2),
-            2
-        );
+        $bmi = new Bmi($this->user->characteristic);
+        return $bmi->calculate();
+    }
+
+    /**
+     * @throws BadCharacteristicUserException
+     */
+    public function getBmr(): float
+    {
+        $bmr = new Bmr($this->user->characteristic);
+        return $bmr->calculate();
     }
 }
